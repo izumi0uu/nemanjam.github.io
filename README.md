@@ -1,3 +1,89 @@
+# 代码阅读推荐顺序
+
+这是一个建议的代码阅读顺序，帮助你理解这个 Astro 博客项目的结构和关键部分。
+
+## 1. 项目配置
+
+这些文件定义了项目的基本设置、构建过程和依赖。
+
+*   [`package.json`](./package.json) - 查看项目依赖、脚本命令 (dev, build, lint 等)。
+*   [`astro.config.ts`](./astro.config.ts) - Astro 框架的核心配置文件，包括集成、站点 URL 等。
+*   [`tailwind.config.ts`](./tailwind.config.ts) - Tailwind CSS 的配置文件，定义了样式主题、插件等。
+*   [`tsconfig.json`](./tsconfig.json) - TypeScript 配置文件，定义了编译选项和路径别名。
+*   [`src/config/process-env.ts`](./src/config/process-env.ts) - 处理环境变量，确保类型安全。
+*   [`src/config/client.ts`](./src/config/client.ts) - 客户端相关的配置常量。
+*   [`src/config/server.ts`](./src/config/server.ts)* - 服务端相关的配置常量。
+
+## 2. 核心布局
+
+布局文件定义了页面的基本结构。
+
+*   [`src/layouts/Base.astro`](./src/layouts/Base.astro)* - 所有页面的基础布局，通常包含 `<head>`、页头、页脚等通用元素。
+*   [`src/components/astro-remote/Layout.astro`](./src/components/astro-remote/Layout.astro)* - （需要确认此文件的具体用途，可能与远程 Markdown 相关）
+*   [`src/layouts/Page.astro`](./src/layouts/Page.astro)* - 标准页面的布局。
+*   [`src/layouts/Post.astro`](./src/layouts/Post.astro)* - 博客文章页面的布局。
+*   [`src/layouts/List.astro`](./src/layouts/List.astro)* - 用于展示列表（如博客文章列表）的布局。
+*   [`src/layouts/Centered.astro`](./src/layouts/Centered.astro)* - 内容居中的布局。
+*   [`src/layouts/FullWidth.astro`](./src/layouts/FullWidth.astro)* - 全宽内容的布局。
+*   [`src/layouts/Project.astro`](./src/layouts/Project.astro)* - 项目页面的布局。
+
+## 3. 关键组件
+
+这些是构成页面 UI 的可重用组件。
+
+*   [`src/components/BaseHead.astro`](./src/components/BaseHead.astro)* - 定义了 HTML `<head>` 部分的内容，如 meta 标签、SEO 设置等。
+*   [`src/components/Header.astro`](./src/components/Header.astro)* - 网站的页头组件。
+*   [`src/components/Footer.astro`](./src/components/Footer.astro)* - 网站的页脚组件。
+*   [`src/components/ThemeToggle.astro`](./src/components/ThemeToggle.astro)* - 主题切换（亮/暗模式）按钮。
+*   [`src/components/ThemeScript.astro`](./src/components/ThemeScript.astro)* - 处理主题切换逻辑的脚本。
+*   [`src/components/PostCard.astro`](./src/components/PostCard.astro)* - 博客文章卡片组件（用于列表页）。
+*   [`src/components/ProjectCard.astro`](./src/components/ProjectCard.astro)* - 项目卡片组件。
+*   [`src/components/Pagination.astro`](./src/components/Pagination.astro)* - 分页组件。
+*   [`src/components/TagList.astro`](./src/components/TagList.astro)* - 显示标签列表的组件。
+*   [`src/components/Giscus.astro`](./src/components/Giscus.astro)* - Giscus 评论组件。
+*   [`src/components/Share.astro`](./src/components/Share.astro)* - 分享文章的组件。
+
+## 4. 页面入口
+
+这些是用户直接访问的页面。
+
+*   [`src/pages/index.mdx`](./src/pages/index.mdx)* - 网站首页。
+*   [`src/pages/blog/[...page].astro`](./src/pages/blog/[...page].astro)* - （需要确认此动态路由文件）博客文章列表页（支持分页）。
+*   [`src/pages/blog/[slug].astro`](./src/pages/blog/[slug].astro)* - （需要确认此动态路由文件）单篇博客文章页。
+*   [`src/pages/projects/index.astro`](./src/pages/projects/index.astro)* - （需要确认此文件）项目列表页。
+*   [`src/pages/projects/[slug].astro`](./src/pages/projects/[slug].astro)* - （需要确认此动态路由文件）单个项目详情页。
+*   [`src/pages/tags/[tag]/[...page].astro`](./src/pages/tags/[tag]/[...page].astro)* - （需要确认此动态路由文件）按标签筛选的文章列表页。
+*   [`src/pages/categories/[category]/[...page].astro`](./src/pages/categories/[category]/[...page].astro)* - （需要确认此动态路由文件）按分类筛选的文章列表页。
+*   [`src/pages/about.mdx`](./src/pages/about.mdx)* - 关于页面。
+*   [`src/pages/links.astro`](./src/pages/links.astro)* - 链接页面。
+*   [`src/pages/404.mdx`](./src/pages/404.mdx)* - 404 错误页面。
+
+## 5. 内容定义与处理
+
+这部分涉及内容的结构和获取方式。
+
+*   [`src/content/config.ts`](./src/content/config.ts)* - Astro 内容集合 (Content Collections) 的配置文件，定义了 `blog` 和 `projects` 的 schema。
+*   [`src/content/blog/`](./src/content/blog/)* - 存放博客文章 Markdown/MDX 文件的目录。
+*   [`src/content/projects/`](./src/content/projects/)* - 存放项目描述 Markdown/MDX 文件的目录。
+*   [`src/schemas/blog.ts`](./src/schemas/blog.ts)* - 定义博客文章 Zod schema，用于数据校验。
+*   [`src/schemas/project.ts`](./src/schemas/project.ts)* - 定义项目 Zod schema。
+
+## 6. 工具函数与常量
+
+辅助性的代码。
+
+*   [`src/constants/`](./src/constants/)* - 存放项目常量。
+*   [`src/utils/`](./src/utils/)* - 存放工具函数。
+*   [`src/libs/`](./src/libs/)* - 可能包含一些库或封装。
+*   [`src/types/`](./src/types/)* - 存放 TypeScript 类型定义。
+
+## 7. 样式与其他资源
+
+*   [`src/styles/`](./src/styles/)* - 全局 CSS 样式。
+*   [`public/`](./public/)* - 存放静态资源，如图片、字体等。
+
+---
+
 # Developer blog [nemanjamitic.com](https://nemanjamitic.com)
 
 This is the repository for my coding blog [nemanjamitic.com](https://nemanjamitic.com). Free and open source, feel free to reuse code and customize for your own developer blog. Blog posts (future) require attribution.

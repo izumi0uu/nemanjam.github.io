@@ -1,7 +1,57 @@
+/**
+ * @file package.json
+ * @description
+ * 这个文件是 Node.js 项目的清单文件，用于管理项目的元数据、依赖项和脚本。
+ * 它遵循 npm (Node Package Manager) 或 yarn 的规范。
+ * 对于小学生来说，可以把它想象成一个项目的"身份证"和"说明书"。
+ * 它告诉计算机这个项目叫什么名字、版本号是多少、需要哪些"积木"(依赖包)才能搭起来，
+ * 以及有哪些快捷"按钮"(脚本命令)可以执行常见的任务(比如启动、构建、测试)。
+ */
 {
+  /**
+   * @property {string} name - 项目的名称。
+   * 这就像给项目取一个独一无二的名字，方便识别。
+   * 通常会发布到 npm 或其他包管理平台，所以需要符合命名规范(小写字母、连字符等)。
+   */
   "name": "nemanjam.github.io",
+  /**
+   * @property {string} version - 项目的当前版本号。
+   * 这遵循语义化版本(Semantic Versioning)规范 (主版本号.次版本号.修订号)。
+   * - 主版本号 (MAJOR): 当你做了不兼容的 API 修改。
+   * - 次版本号 (MINOR): 当你做了向下兼容的功能性新增。
+   * - 修订号 (PATCH): 当你做了向下兼容的问题修正。
+   * 每次发布新功能或修复 bug 时，都需要更新版本号。
+   */
   "version": "0.0.1",
+  /**
+   * @property {boolean} private - 指示这个包是否是私有的。
+   * 如果设置为 true，npm 或 yarn 会拒绝发布这个包。
+   * 这对于不想公开源代码或不想发布到公共仓库的项目很有用。
+   */
   "private": true,
+  /**
+   * @property {object} scripts - 定义了一组可以通过 `npm run <script-name>` 或 `yarn <script-name>` 执行的脚本命令。
+   * 这就像给常用的操作设置了快捷键。
+   * 例如，`dev` 通常用于启动开发服务器，`build` 用于构建生产环境的代码，`lint` 用于代码风格检查。
+   * 这里的脚本使用了 astro (一个现代化的前端框架)、eslint (代码检查工具)、prettier (代码格式化工具)、
+   * tsc (TypeScript 编译器)、bash (shell 脚本) 和 serve (一个简单的静态文件服务器)。
+   * - `dev`: 启动 Astro 的开发服务器，支持热更新。
+   * - `start`: 使用 `serve` 命令在本地运行构建后的 `dist` 目录，模拟生产环境。
+   * - `preview`: 启动 Astro 的预览服务器，用于本地测试生产构建。
+   * - `build`: 使用 Astro 构建生产版本的静态网站。
+   * - `build:nginx*`: 针对 Nginx 部署的特定构建命令，设置了生产环境的 URL 和 Plausible 分析相关的环境变量。
+   * - `astro`: 直接运行 Astro CLI 命令。
+   * - `sync`: Astro 的命令，可能用于同步类型定义或其他配置。
+   * - `lint`: 使用 ESLint 检查 `src` 目录下指定类型文件的代码风格和潜在错误。
+   * - `format`: 使用 Prettier 自动格式化项目中的所有代码。
+   * - `clean`: 删除 `node_modules` 目录和 `yarn.lock` 文件，用于清理依赖。
+   * - `check-types`: 使用 TypeScript 编译器检查类型错误，但不生成 JavaScript 文件 (`--noEmit`)。
+   * - `deploy:*`: 各种部署脚本，使用 bash 脚本将构建好的应用部署到不同的环境 (Nginx, Docker) 和服务器 (arm1, lxc11, pi)。
+   * - `docker:*`: 用于构建和推送 Docker 镜像的命令，支持不同的 CPU 架构 (arm, x86)。
+   * - `pi`, `nginx`: 组合了构建和部署命令的快捷方式。
+   * - `tunnel`: 使用 SSH 创建一个反向隧道，可能用于将本地开发服务器暴露给外部访问。
+   * - `dc:up`: 使用 Docker Compose 启动在 `docker-compose.yml` 文件中定义的服务。
+   */
   "scripts": {
     "dev": "astro dev",
     "start": "serve ./dist",
@@ -30,6 +80,32 @@
     "tunnel": "ssh -R *:1082:localhost:3000 amd1c",
     "dc:up": "docker compose up --build --force-recreate -d"
   },
+  /**
+   * @property {object} dependencies - 项目在生产环境中运行时所必需的依赖包。
+   * 这些是你项目实际功能所依赖的"积木"。
+   * 当你运行 `npm install` 或 `yarn install` 时，这些包会被下载到 `node_modules` 目录。
+   * - `@astrojs/*`: Astro 框架及其核心集成 (MDX, React, Sitemap, Tailwind)。
+   * - `@fontsource-variable/inter`: Inter 可变字体的包。
+   * - `astro`: Astro 框架本身。
+   * - `astro-*`: 其他 Astro 集成或社区插件 (embed, expressive-code, icon, remote, social-share)。
+   * - `class-variance-authority`, `clsx`, `tailwind-merge`: 用于处理 CSS 类名，特别是在使用 Tailwind CSS 时管理条件样式和合并类名。
+   * - `date-fns`: 用于日期格式化和操作的库。
+   * - `dotenv`: 用于从 `.env` 文件加载环境变量。
+   * - `feed`: 用于生成 RSS 或 Atom feed。
+   * - `giscus`: 用于集成 Giscus 评论系统。
+   * - `github-slugger`: 用于生成 GitHub 风格的 slug (URL 友好的字符串)。
+   * - `lodash.debounce`: Lodash 库中的防抖函数，用于限制函数调用频率。
+   * - `mdast-util-to-string`: 用于从 Markdown AST (抽象语法树) 中提取纯文本。
+   * - `object-treeify`: 可能用于将对象转换为树状结构字符串，用于调试或展示。
+   * - `photoswipe`: 一个图片预览库。
+   * - `react`, `react-dom`: React 库及其 DOM 渲染器，用于构建交互式 UI 组件。
+   * - `react-icons`: 提供了流行的图标库作为 React 组件。
+   * - `reading-time`: 用于估算文本阅读时间的库。
+   * - `rehype-external-links`: Rehype 插件，用于给 Markdown/HTML 中的外部链接添加 `target="_blank"` 等属性。
+   * - `sharp`: 高性能的 Node.js 图片处理库，Astro 可能用它来优化图片。
+   * - `tailwind-clip-path`: Tailwind CSS 插件，用于添加 `clip-path` 功能。
+   * - `zod`: 用于数据校验的库，常用于校验 API 响应、表单输入或配置文件。
+   */
   "dependencies": {
     "@astrojs/mdx": "^4.2.5",
     "@astrojs/partytown": "^2.1.4",
@@ -64,9 +140,36 @@
     "tailwind-merge": "^2.6.0",
     "zod": "^3.24.3"
   },
+  /**
+   * @property {object} resolutions - 用于强制指定某些依赖包的版本。
+   * 这在依赖树中存在版本冲突时很有用，可以确保所有地方都使用同一个版本的包。
+   * 这里强制 `sharp` 包的版本为 `0.34.1`。
+   */
   "resolutions": {
     "**/sharp": "0.34.1"
   },
+  /**
+   * @property {object} devDependencies - 项目在开发过程中需要的依赖包，但在生产环境中不需要。
+   * 这些通常是构建工具、测试框架、代码检查器、格式化器等。
+   * - `@astrojs/check`: Astro 的类型检查工具。
+   * - `@expressive-code/plugin-collapsible-sections`: Expressive Code 的插件，用于代码块的可折叠部分。
+   * - `@ianvs/prettier-plugin-sort-imports`: Prettier 插件，用于自动排序 import 语句。
+   * - `@iconify-json/mdi`: Material Design Icons 的 Iconify JSON 数据。
+   * - `@tailwindcss/typography`: Tailwind CSS 插件，提供了一套排版样式。
+   * - `@types/*`: TypeScript 的类型定义文件，为 JavaScript 库提供类型信息。
+   * - `@typescript-eslint/*`: ESLint 的插件和解析器，用于检查 TypeScript 代码。
+   * - `eslint`: 代码检查工具。
+   * - `eslint-config-prettier`: 关闭 ESLint 中与 Prettier 冲突的规则。
+   * - `eslint-mdx`, `eslint-plugin-mdx`: 用于检查 MDX 文件的 ESLint 插件。
+   * - `eslint-plugin-astro`: 用于检查 Astro 文件的 ESLint 插件。
+   * - `eslint-plugin-tailwindcss`: 用于检查 Tailwind CSS 类名使用的 ESLint 插件。
+   * - `prettier`: 代码格式化工具。
+   * - `prettier-plugin-astro`: Prettier 插件，用于格式化 Astro 文件。
+   * - `satori`, `satori-html`: 用于将 HTML/CSS 转换为 SVG，可能用于生成 Open Graph 图片。
+   * - `serve`: 一个简单的本地静态文件服务器，用于 `start` 脚本。
+   * - `tailwindcss`: Tailwind CSS 框架本身。
+   * - `typescript`: TypeScript 语言编译器。
+   */
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
     "@expressive-code/plugin-collapsible-sections": "^0.41.2",
@@ -93,7 +196,17 @@
     "tailwindcss": "^3.4.15",
     "typescript": "^5.8.3"
   },
+  /**
+   * @property {string} packageManager - 指定项目使用的包管理器及其版本。
+   * 这有助于确保所有开发者使用相同的工具链，避免潜在的兼容性问题。
+   * 这里指定使用 yarn 版本 1.22.22。
+   */
   "packageManager": "yarn@1.22.22",
+  /**
+   * @property {object} engines - 指定项目运行所需的 Node.js 版本。
+   * 这有助于确保项目在兼容的环境中运行。
+   * 这里要求 Node.js 版本大于或等于 v23.11.0。
+   */
   "engines": {
     "node": ">=v23.11.0"
   }
